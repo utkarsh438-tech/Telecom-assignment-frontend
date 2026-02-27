@@ -1,0 +1,15 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title>Shelf Summary</mat-card-title>
+    <mat-card-content>
+      <p><strong>Shelf Name:</strong> {{shelf.name}}</p>
+      <p><strong>Part Number:</strong> {{shelf.partNumber}}</p>
+      <p><strong>Shelf Position:</strong> {{shelf.position}}</p>
+      <p><strong>Device Name:</strong> {{shelf.deviceName}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="updateShelf()">Update Shelf</button>
+      <button mat-raised-button color="warn" (click)="deleteShelf()">Delete Shelf</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

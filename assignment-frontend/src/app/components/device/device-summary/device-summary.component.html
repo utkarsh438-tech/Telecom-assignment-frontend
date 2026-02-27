@@ -1,0 +1,43 @@
+<!-- src/app/components/device/device-summary/device-summary.component.html -->
+
+<div class="container">
+  <mat-card>
+    <mat-card-title>Device Summary</mat-card-title>
+    <mat-card-content>
+      <p><strong>Device Name:</strong> {{device.deviceName}}</p>
+      <p><strong>Part Number:</strong> {{device.partNumber}}</p>
+      <p><strong>Building Name:</strong> {{device.buildingName}}</p>
+      <p><strong>Device Type:</strong> {{device.deviceType}}</p>
+      <p><strong>Number of Shelf Positions:</strong> {{device.numShelfPositions}}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <h3>Shelf Positions</h3>
+  <table mat-table [dataSource]="shelfPositions" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> Position </th>
+      <td mat-cell *matCellDef="let pos"> {{pos.position}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let pos"> {{pos.status}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let pos">
+        <button *ngIf="pos.status === 'Free'" mat-button color="primary" (click)="addShelf(pos.position)">
+          Add Shelf
+        </button>
+        <button *ngIf="pos.status === 'Allocated'" mat-button color="accent" (click)="viewShelf()">
+          {{pos.shelfName}}
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

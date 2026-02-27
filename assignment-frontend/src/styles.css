@@ -1,0 +1,23 @@
+/* Global Ciena-inspired theme overrides */
+.mat-toolbar {
+  background-color: #005EB8 !important; /* Primary Blue */
+  color: white !important;
+}
+
+.mat-card {
+  background-color: #F5F5F5;
+  margin-bottom: 20px;
+}
+
+button.mat-raised-button {
+  margin-right: 10px;
+}
+
+button[color="primary"] {
+  background-color: #00A9CE !important; /* Accent Teal */
+  color: white !important;
+}
+
+.container {
+  margin: 20px;
+}
