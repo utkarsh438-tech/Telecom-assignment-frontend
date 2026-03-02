@@ -1,5 +1,3 @@
-// src/app/services/device.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -10,7 +8,7 @@ import { Device } from '../models/device.model';
 })
 export class DeviceService {
 
-  private baseUrl = 'http://localhost:8080/devices'; // adjust if backend runs on different port
+  private baseUrl = 'http://localhost:8080/api/devices';  
 
   constructor(private http: HttpClient) { }
 

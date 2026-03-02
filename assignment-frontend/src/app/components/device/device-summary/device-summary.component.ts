@@ -4,13 +4,13 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-device-summary',
   standalone: true,
-  imports: [MatCardModule, MatTableModule, MatButtonModule, NgFor],
+  imports: [MatCardModule, MatTableModule, MatButtonModule, NgFor,NgIf],
   templateUrl: './device-summary.component.html',
   styleUrls: ['./device-summary.component.css']
 })

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { MOCK_SHELVES } from '../../../mock-data';
 
 @Component({
   selector: 'app-shelf-summary',
@@ -11,18 +13,22 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class ShelfSummaryComponent {
   shelf = {
-    id: 's1',
-    name: 'Shelf 1',
-    partNumber: 'SP123',
-    position: 1,
-    deviceName: 'Device A'
+    ...MOCK_SHELVES[0]
   };
 
+  constructor(private router: Router) {}
+
   updateShelf(): void {
-    alert('Update Shelf clicked');
+    // Placeholder navigation after "update" until real update flow is wired.
+    this.router.navigate(['/shelves']);
   }
 
   deleteShelf(): void {
-    alert('Delete Shelf clicked');
+    // Placeholder navigation after "delete" until real delete flow is wired.
+    this.router.navigate(['/shelves']);
+  }
+
+  goToDevice(): void {
+    this.router.navigate(['/devices', this.shelf.deviceId]);
   }
 }

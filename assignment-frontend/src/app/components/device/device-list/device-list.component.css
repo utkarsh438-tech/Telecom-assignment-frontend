@@ -1,13 +1,64 @@
-.container {
-  margin: 20px;
-}
-
 .full-width {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.page-subtitle {
+  margin-top: 4px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.page-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 table {
   width: 100%;
-  margin-top: 20px;
+}
+
+.nicer-table tr.mat-row:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.type-chip {
+  background: rgba(0, 94, 184, 0.10);
+  color: #005eb8;
+  font-weight: 600;
+}
+
+.create-shelf-card {
+  margin-bottom: 20px;
+}
+
+.create-shelf-hint {
+  margin-bottom: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.create-shelf-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.create-shelf-row mat-form-field {
+  min-width: 200px;
 }

@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Shelves</div>
+      <div class="page-subtitle">Browse shelves and open the summary page</div>
+    </div>
+  </div>
+
+  <mat-card>
+    <mat-card-title>Shelf Inventory</mat-card-title>
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Name, part number, device..." />
+      </mat-form-field>
+
+      <table mat-table [dataSource]="shelves" class="mat-elevation-z8 nicer-table">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Shelf Name </th>
+          <td mat-cell *matCellDef="let shelf"> {{shelf.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="partNumber">
+          <th mat-header-cell *matHeaderCellDef> Part Number </th>
+          <td mat-cell *matCellDef="let shelf"> {{shelf.partNumber}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deviceName">
+          <th mat-header-cell *matHeaderCellDef> Device </th>
+          <td mat-cell *matCellDef="let shelf">
+            <mat-chip class="device-chip">{{shelf.deviceName}}</mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> Position </th>
+          <td mat-cell *matCellDef="let shelf"> {{shelf.position}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let shelf">
+            <button mat-button color="accent" (click)="viewShelf(shelf.id)">View</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

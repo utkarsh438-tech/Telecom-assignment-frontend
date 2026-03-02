@@ -1,11 +1,35 @@
 <div class="container">
+  <div class="page-header">
+    <div>
+      <div class="page-title">{{shelf.name}}</div>
+      <div class="page-subtitle">Shelf summary </div>
+    </div>
+    <div class="page-actions">
+      <button mat-button routerLink="/shelves">Back</button>
+      <button mat-button color="primary" (click)="goToDevice()">Open Device</button>
+    </div>
+  </div>
+
   <mat-card>
-    <mat-card-title>Shelf Summary</mat-card-title>
     <mat-card-content>
-      <p><strong>Shelf Name:</strong> {{shelf.name}}</p>
-      <p><strong>Part Number:</strong> {{shelf.partNumber}}</p>
-      <p><strong>Shelf Position:</strong> {{shelf.position}}</p>
-      <p><strong>Device Name:</strong> {{shelf.deviceName}}</p>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Shelf Name</div>
+          <div class="info-value">{{shelf.name}}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Part Number</div>
+          <div class="info-value">{{shelf.partNumber}}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Shelf Position</div>
+          <div class="info-value">{{shelf.position}}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Device</div>
+          <div class="info-value">{{shelf.deviceName}}</div>
+        </div>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" (click)="updateShelf()">Update Shelf</button>

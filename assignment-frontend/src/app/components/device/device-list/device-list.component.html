@@ -1,23 +1,69 @@
 <div class="container">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Devices</div>
+      <div class="page-subtitle">Create devices and manage shelf positions</div>
+    </div>
+    <div class="page-actions">
+      <button mat-raised-button color="primary" (click)="createDevice()">Create Device</button>
+      <button mat-button (click)="goToShelves()">View Shelves</button>
+    </div>
+  </div>
+
+  <mat-card class="create-shelf-card">
+    <mat-card-title>Create Shelf</mat-card-title>
+    <mat-card-content>
+      <p class="create-shelf-hint">Select a device and a free position, then go to the shelf creation form.</p>
+      <div class="create-shelf-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Device</mat-label>
+          <mat-select [(ngModel)]="selectedDeviceId" (ngModelChange)="onDeviceChange($event)">
+            <mat-option value="">-- Select device --</mat-option>
+            <mat-option *ngFor="let d of allDevices" [value]="d.id">{{ d.deviceName }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Position</mat-label>
+          <mat-select [(ngModel)]="selectedPosition">
+            <mat-option value="">-- Select position --</mat-option>
+            <mat-option *ngFor="let p of freePositions" [value]="p.position">Position {{ p.position }} (Free)</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" [disabled]="!selectedDeviceId || selectedPosition == null || selectedPosition === ''" (click)="goToCreateShelf()">
+          Go to Create Shelf
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
   <mat-card>
-    <mat-card-title>Device List</mat-card-title>
+    <mat-card-title>Device Inventory</mat-card-title>
     <mat-card-content>
 
       <!-- Search Bar -->
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Search Devices</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Enter device name" />
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Name, part number, building, type..." />
       </mat-form-field>
 
-      <!-- Create Device Button -->
-      <button mat-raised-button color="primary" (click)="createDevice()">Create Device</button>
-
       <!-- Device Table -->
-      <table mat-table [dataSource]="devices" class="mat-elevation-z8">
+      <table mat-table [dataSource]="devices" class="mat-elevation-z8 nicer-table">
 
         <ng-container matColumnDef="deviceName">
           <th mat-header-cell *matHeaderCellDef> Device Name </th>
           <td mat-cell *matCellDef="let device"> {{device.deviceName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deviceType">
+          <th mat-header-cell *matHeaderCellDef> Type </th>
+          <td mat-cell *matCellDef="let device">
+            <mat-chip class="type-chip">{{device.deviceType}}</mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="buildingName">
+          <th mat-header-cell *matHeaderCellDef> Building </th>
+          <td mat-cell *matCellDef="let device"> {{device.buildingName}} </td>
         </ng-container>
 
         <ng-container matColumnDef="partNumber">
@@ -25,9 +71,9 @@
           <td mat-cell *matCellDef="let device"> {{device.partNumber}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="buildingName">
-          <th mat-header-cell *matHeaderCellDef> Building Name </th>
-          <td mat-cell *matCellDef="let device"> {{device.buildingName}} </td>
+        <ng-container matColumnDef="numShelfPositions">
+          <th mat-header-cell *matHeaderCellDef> Positions </th>
+          <td mat-cell *matCellDef="let device"> {{device.numShelfPositions}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
