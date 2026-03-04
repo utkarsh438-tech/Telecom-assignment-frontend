@@ -24,12 +24,14 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Position</mat-label>
-          <mat-select [(ngModel)]="selectedPosition">
+          <mat-select [(ngModel)]="selectedShelfPositionId"> <!-- FIX: choose shelfPositionId -->
             <mat-option value="">-- Select position --</mat-option>
-            <mat-option *ngFor="let p of freePositions" [value]="p.position">Position {{ p.position }} (Free)</mat-option>
+            <mat-option *ngFor="let p of freePositions" [value]="p.id">
+              Position {{ p.positionNumber }} (Free) <!-- FIX: backend positionNumber -->
+            </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button color="primary" [disabled]="!selectedDeviceId || selectedPosition == null || selectedPosition === ''" (click)="goToCreateShelf()">
+        <button mat-raised-button color="primary" [disabled]="!selectedDeviceId || !selectedShelfPositionId" (click)="goToCreateShelf()"> <!-- FIX -->
           Go to Create Shelf
         </button>
       </div>

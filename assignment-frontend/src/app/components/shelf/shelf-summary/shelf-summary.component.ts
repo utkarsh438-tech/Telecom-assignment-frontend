@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
-import { MOCK_SHELVES } from '../../../mock-data';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ShelfService } from '../../../services/shelf.service'; // FIX: use backend
+import { Shelf } from '../../../models/shelf.model';
 
 @Component({
   selector: 'app-shelf-summary',
@@ -12,11 +13,22 @@ import { MOCK_SHELVES } from '../../../mock-data';
   styleUrls: ['./shelf-summary.component.css']
 })
 export class ShelfSummaryComponent {
-  shelf = {
-    ...MOCK_SHELVES[0]
-  };
+  shelf: Shelf | null = null; // FIX
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private shelfService: ShelfService
+  ) {
+    // FIX: load shelf by route id
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.shelfService.getShelfById(id).subscribe({
+        next: (shelf) => (this.shelf = shelf),
+        error: () => (this.shelf = null)
+      });
+    }
+  }
 
   updateShelf(): void {
     // Placeholder navigation after "update" until real update flow is wired.
@@ -24,11 +36,17 @@ export class ShelfSummaryComponent {
   }
 
   deleteShelf(): void {
-    // Placeholder navigation after "delete" until real delete flow is wired.
-    this.router.navigate(['/shelves']);
+    // FIX: delete in backend then navigate back
+    if (!this.shelf?.id) return;
+    this.shelfService.deleteShelf(this.shelf.id).subscribe({
+      next: () => this.router.navigate(['/shelves']),
+      error: () => alert('Failed to delete shelf. Please ensure backend is running and CORS is enabled.')
+    });
   }
 
   goToDevice(): void {
+    // FIX: deviceId is optional until backend returns it
+    if (!this.shelf?.deviceId) return;
     this.router.navigate(['/devices', this.shelf.deviceId]);
   }
 }

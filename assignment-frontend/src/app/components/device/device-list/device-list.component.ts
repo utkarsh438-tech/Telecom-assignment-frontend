@@ -9,56 +9,83 @@ import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
-import { MOCK_DEVICES, getMockShelfPositionsByDeviceId, ShelfPositionRow } from '../../../mock-data';
+import { DeviceService } from '../../../services/device.service';  
+import { ShelfPositionService } from '../../../services/shelf-position.service';  
+import { Device } from '../../../models/device.model';
+import { ShelfPosition } from '../../../models/shelf-position.model';
+
 @Component({
   selector: 'app-device-list',
   standalone: true,
   imports: [MatCardModule, MatTableModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatChipsModule, FormsModule, NgFor],
   templateUrl: './device-list.component.html',
   styleUrls: ['./device-list.component.css']
-
 })
 export class DeviceListComponent {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private deviceService: DeviceService,
+    private shelfPositionService: ShelfPositionService
+  ) {
+     
+    this.deviceService.getAllDevices().subscribe({
+      next: (devices) => {
+        this.allDevices = devices ?? [];
+        this.devices = [...this.allDevices];
+      },
+      error: () => {
+         
+        this.allDevices = [];
+        this.devices = [];
+      }
+    });
+  }
 
-  // ✅ Static data
-allDevices = MOCK_DEVICES;
-  devices = [...this.allDevices]; // filtered list
-  displayedColumns: string[] = ['deviceName', 'partNumber', 'buildingName', 'actions'];
+  allDevices: Device[] = [];  
+
+  devices: Device[] = []; 
+  displayedColumns: string[] = ['deviceName', 'deviceType', 'buildingName', 'partNumber', 'numShelfPositions', 'actions'];
 
   createDevice(): void {
     this.router.navigate(['/devices/create']);
   }
 
-    goToShelves(): void {
+  goToShelves(): void {
     this.router.navigate(['/shelves']);
   }
-  selectedDeviceId: string | null = null;
-  selectedPosition: number | string | null = null;
-  freePositions: ShelfPositionRow[] = [];
 
+  selectedDeviceId: string | null = null; 
+  selectedShelfPositionId: string | null = null;
+  freePositions: ShelfPosition[] = [];
 
-onDeviceChange(deviceId: string): void {
+  onDeviceChange(deviceId: string): void {
     this.selectedDeviceId = deviceId || null;
-    this.selectedPosition = null;
-    this.freePositions = deviceId
-      ? getMockShelfPositionsByDeviceId(deviceId).filter(p => p.status === 'Free')
-      : [];
+    this.selectedShelfPositionId = null;
+
+    if (!this.selectedDeviceId) {
+      this.freePositions = [];
+      return;
+    } 
+    this.shelfPositionService.getByDeviceId(this.selectedDeviceId).subscribe({
+      next: (positions) => {
+        this.freePositions = (positions ?? []).filter(p => !p.allocated);
+      },
+      error: () => {
+        this.freePositions = [];
+      }
+    });
   }
 
-
- goToCreateShelf(): void {
-    const pos = this.selectedPosition;
-    if (!this.selectedDeviceId || pos == null || pos === '') return;
-    const positionId = `${this.selectedDeviceId}-${pos}`;
-    this.router.navigate(['/shelves/create', positionId]);
+  goToCreateShelf(): void { 
+    if (!this.selectedDeviceId || !this.selectedShelfPositionId) return;
+    this.router.navigate(['/shelves/create', this.selectedShelfPositionId]);
   }
 
   viewSummary(id: string): void {
     this.router.navigate(['/devices', id]);
   }
 
-applyFilter(event: Event): void {
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
     this.devices = this.allDevices.filter(d =>
       d.deviceName.toLowerCase().includes(filterValue) ||
@@ -67,7 +94,8 @@ applyFilter(event: Event): void {
       d.deviceType.toLowerCase().includes(filterValue)
     );
   }
-    get totalDevices(): number {
+
+  get totalDevices(): number {
     return this.allDevices.length;
   }
 }

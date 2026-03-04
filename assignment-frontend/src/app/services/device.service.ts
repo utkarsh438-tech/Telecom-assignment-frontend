@@ -1,3 +1,5 @@
+// src/app/services/device.service.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,7 +10,8 @@ import { Device } from '../models/device.model';
 })
 export class DeviceService {
 
-  private baseUrl = 'http://localhost:8080/api/devices';  
+  // FIX: backend now serves devices under '/devices'
+  private baseUrl = 'http://localhost:8080/devices';
 
   constructor(private http: HttpClient) { }
 
@@ -23,8 +26,9 @@ export class DeviceService {
   }
 
   // ✅ Create new device
-  createDevice(device: Device): Observable<string> {
-    return this.http.post<string>(`${this.baseUrl}`, device);
+  createDevice(device: Omit<Device, 'id'>): Observable<Device> {
+    // FIX: backend returns created DeviceDTO (not a string)
+    return this.http.post<Device>(`${this.baseUrl}`, device);
   }
 
   // ✅ Update device

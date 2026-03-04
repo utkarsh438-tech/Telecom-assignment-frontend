@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
-
+import { DeviceService } from '../../../services/device.service';
 @Component({
   selector: 'app-device-create',
   standalone: true,
@@ -17,7 +17,11 @@ import { Router, RouterLink } from '@angular/router';
 export class DeviceCreateComponent {
   deviceForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+    constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private deviceService: DeviceService
+  ) {
     this.deviceForm = this.fb.group({
       deviceName: ['', Validators.required],
       partNumber: ['', Validators.required],
@@ -29,9 +33,13 @@ export class DeviceCreateComponent {
 
   onSubmit(): void {
     if (this.deviceForm.valid) {
-      // For now just navigate back to the device list after a successful form submission.
-      // You can plug in the real backend call here later.
-      this.router.navigate(['/devices']);
+     this.deviceService.createDevice(this.deviceForm.value).subscribe({
+        next: () => this.router.navigate(['/devices']),
+        error: () => {
+          // FIX: keep it simple; you can add a snackbar later
+          alert('Failed to create device. Please ensure backend is running and CORS is enabled.');
+        }
+      });
     }
   }
 }

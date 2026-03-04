@@ -7,7 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { NgFor } from '@angular/common';
 import { Router } from '@angular/router';
-import { MOCK_SHELVES } from '../../../mock-data';
+import { ShelfService } from '../../../services/shelf.service'; // FIX: use backend
+import { Shelf } from '../../../models/shelf.model';
 
 @Component({
   selector: 'app-shelf-list',
@@ -18,10 +19,22 @@ import { MOCK_SHELVES } from '../../../mock-data';
 })
 export class ShelfListComponent {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private shelfService: ShelfService) {
+    // FIX: load from backend on page load
+    this.shelfService.getAllShelves().subscribe({
+      next: (shelves) => {
+        this.allShelves = shelves ?? [];
+        this.shelves = [...this.allShelves];
+      },
+      error: () => {
+        this.allShelves = [];
+        this.shelves = [];
+      }
+    });
+  }
 
-  allShelves = MOCK_SHELVES;
-  shelves = [...this.allShelves];
+  allShelves: Shelf[] = []; // FIX
+  shelves: Shelf[] = []; // FIX
 
   displayedColumns: string[] = ['name', 'partNumber', 'deviceName', 'position', 'actions'];
 
@@ -34,7 +47,7 @@ export class ShelfListComponent {
     this.shelves = this.allShelves.filter(s =>
       s.name.toLowerCase().includes(filterValue) ||
       s.partNumber.toLowerCase().includes(filterValue) ||
-      s.deviceName.toLowerCase().includes(filterValue)
+      (s.deviceName ?? '').toLowerCase().includes(filterValue) // FIX: deviceName may be missing if backend doesn't return it yet
     );
   }
 
