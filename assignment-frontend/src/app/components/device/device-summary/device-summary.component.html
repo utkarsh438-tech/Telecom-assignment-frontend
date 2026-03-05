@@ -3,8 +3,8 @@
 <div class="container">
   <div class="page-header">
     <div>
-      <div class="page-title">{{device?.deviceName}}</div> <!-- FIX: device may load async -->
-      <div class="page-subtitle">Device summary and shelf positions (static preview)</div>
+      <div class="page-title" >{{device?.deviceName}}</div> <!-- FIX: device may load async -->
+      <!-- <div class="page-subtitle">Device summary and shelf positions </div> -->
     </div>
     <div class="page-actions">
       <button mat-button routerLink="/devices">Back</button>
@@ -17,22 +17,52 @@
       <div class="info-grid">
         <div class="info-item">
           <div class="info-label">Device Name</div>
-          <div class="info-value">{{device?.deviceName}}</div> <!-- FIX -->
+          <div class="info-value"> 
+            <input 
+            type="text"
+            [value]="device?.deviceName"
+            (input)="onDeviceFieldChange('deviceName',$event)" 
+            /> <!-- FIX: make editable -->
         </div>
+        </div>
+
+
+
         <div class="info-item">
           <div class="info-label">Device Type</div>
           <div class="info-value">
-            <mat-chip class="type-chip">{{device?.deviceType}}</mat-chip> <!-- FIX -->
+             
+              <input 
+                type="text"
+                [value]="device?.deviceType"
+                (input)="onDeviceFieldChange('deviceType',$event)" />
+               <!-- FIX -->
           </div>
         </div>
+
+
         <div class="info-item">
           <div class="info-label">Part Number</div>
-          <div class="info-value">{{device?.partNumber}}</div> <!-- FIX -->
+          <div class="info-value"> 
+            <input 
+              type="text"
+              [value]="device?.partNumber"
+              (input)="onDeviceFieldChange('partNumber',$event)" />
+          </div> <!-- FIX -->
         </div>
+
+
         <div class="info-item">
           <div class="info-label">Building</div>
-          <div class="info-value">{{device?.buildingName}}</div> <!-- FIX -->
+          <div class="info-value"> 
+            <input 
+              type="text"
+              [value]="device?.buildingName"
+              (input)="onDeviceFieldChange('buildingName',$event)" />
+          </div> <!-- FIX -->
         </div>
+
+
         <div class="info-item">
           <div class="info-label">Shelf Positions</div>
           <div class="info-value">{{device?.numShelfPositions}}</div> <!-- FIX -->
@@ -41,7 +71,7 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" (click)="updateDevice()">Update Device</button>
-      <button mat-raised-button color="warn" (click)="deleteDevice()">Delete Device</button>
+      <button mat-raised-button color="warn" (click)="deleteDevice()" >Delete Device</button>
     </mat-card-actions>
   </mat-card>
 

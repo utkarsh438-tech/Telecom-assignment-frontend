@@ -1,12 +1,12 @@
 <div class="container">
   <div class="page-header">
     <div>
-      <div class="page-title">{{shelf?.name}}</div> <!-- FIX -->
-      <div class="page-subtitle">Shelf summary (static preview)</div>
+      <div class="page-title">{{shelf?.shelfName}}</div> <!-- FIX -->
+      <div class="page-subtitle">Shelf summary </div>
     </div>
     <div class="page-actions">
       <button mat-button routerLink="/shelves">Back</button>
-      <button mat-button color="primary" [disabled]="!shelf?.deviceId" (click)="goToDevice()">Open Device</button> <!-- FIX -->
+      <!-- <button mat-button color="primary" [disabled]="!shelf?.deviceId" (click)="goToDevice(shelf.deviceId)">Open Device</button> FIX -->
     </div>
   </div>
 
@@ -15,11 +15,21 @@
       <div class="info-grid">
         <div class="info-item">
           <div class="info-label">Shelf Name</div>
-          <div class="info-value">{{shelf?.name}}</div> <!-- FIX -->
+          <div class="info-value">
+            <input 
+            type="text"
+            [value]="shelf?.shelfName"
+            (input)="onShelfFieldChange('shelfName', $event)" />
+          </div> <!-- FIX -->
         </div>
+
         <div class="info-item">
           <div class="info-label">Part Number</div>
-          <div class="info-value">{{shelf?.partNumber}}</div> <!-- FIX -->
+          <div class="info-value">
+            <input type="text"
+            [value]="shelf?.partNumber"
+            (input)="onShelfFieldChange('partNumber', $event)" />
+          </div> <!-- FIX -->
         </div>
         <div class="info-item">
           <div class="info-label">Shelf Position</div>

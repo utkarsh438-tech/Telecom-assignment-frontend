@@ -45,7 +45,7 @@ export class ShelfListComponent {
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
     this.shelves = this.allShelves.filter(s =>
-      s.name.toLowerCase().includes(filterValue) ||
+      s.shelfName.toLowerCase().includes(filterValue) ||
       s.partNumber.toLowerCase().includes(filterValue) ||
       (s.deviceName ?? '').toLowerCase().includes(filterValue) // FIX: deviceName may be missing if backend doesn't return it yet
     );

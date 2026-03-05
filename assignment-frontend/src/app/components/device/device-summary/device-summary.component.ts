@@ -6,7 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { NgFor, NgIf } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Device } from '../../../models/device.model';
 import { DeviceService } from '../../../services/device.service'; // FIX: use backend
 import { ShelfPositionService } from '../../../services/shelf-position.service'; // FIX: use backend
@@ -15,7 +15,7 @@ import { ShelfPosition } from '../../../models/shelf-position.model';
 @Component({
   selector: 'app-device-summary',
   standalone: true,
-  imports: [MatCardModule, MatTableModule, MatButtonModule, MatChipsModule, NgFor, NgIf],
+  imports: [MatCardModule, MatTableModule, MatButtonModule, MatChipsModule, NgFor, NgIf,RouterLink],
   templateUrl: './device-summary.component.html',
   styleUrls: ['./device-summary.component.css']
 })
@@ -63,12 +63,60 @@ export class DeviceSummaryComponent {
     this.router.navigate(['/shelves', shelfId]);
   }
 
-  // Static stub actions for now – real backend wiring can be added later.
   updateDevice(): void {
-    // no-op for now, kept simple for KT
+    if (!this.device || !this.device.id) {
+      return;
+    }
+
+    this.deviceService.updateDevice(this.device.id, this.device).subscribe({
+      next: (updated) => {
+        this.device = updated;
+        alert('Device updated successfully.');
+      },
+      error: () => {
+        alert('Failed to update device. Please ensure backend is running and CORS is enabled.');
+      }
+    });
   }
 
   deleteDevice(): void {
-    // no-op for now, kept simple for KT
+    if (!this.device || !this.device.id) {
+      return;
+    }
+
+    const confirmed = confirm('Are you sure you want to delete this device?');
+    if (!confirmed) {
+      return;
+    }
+
+    this.deviceService.deleteDevice(this.device.id).subscribe({
+      next: () => {
+        alert('Device deleted successfully.');
+        this.router.navigate(['/devices']);
+      },
+      error: () => {
+        next: () =>
+        alert('Failed to delete device. Please ensure backend is running and CORS is enabled.');
+          this.router.navigate(['/devices']);
+      }
+    });
   }
+
+ onDeviceFieldChange<K extends keyof Device>(field: K, event: Event): void {
+  if (!this.device) return;
+
+  const raw = (event.target as HTMLInputElement).value;
+
+  // Build a value of the correct type for that key
+  let value: Device[K];
+
+  if (field === 'numShelfPositions') {
+    value = Number(raw) as Device[K];
+  } else {
+    // If your other fields are strings:
+    value = raw as Device[K];
+  }
+
+  this.device[field] = value;
+}
 }

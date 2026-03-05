@@ -1,5 +1,9 @@
 /* src/app/components/device/device-summary/device-summary.component.css */
-
+.page-title{
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
 .container {
   margin: 20px;
 }
@@ -15,4 +19,16 @@ table {
 
 button {
   margin-right: 10px;
+}
+.page-actions{
+  display: flex;
+  gap: 8px;
+  align-items: right;
+}
+.page-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 16px;
 }
